@@ -33,7 +33,7 @@ const servidor = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
   if (req.method === 'GET' && url.pathname === '/') {
-    servirArquivo(res, path.join(__dirname, 'public', 'index.html'), 'text/html; charset=utf-8');
+    servirArquivo(res, path.join(__dirname, 'index.html'), 'text/html; charset=utf-8');
     return;
   }
 

@@ -96,6 +96,17 @@ button {
   min-height: 48px;
 }
 
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-limpar {
+  background: linear-gradient(135deg, #64748b, #475569);
+}
+
 .btn-exportar {
   margin-top: 10px;
   background: linear-gradient(135deg, #0f766e, #14b8a6);

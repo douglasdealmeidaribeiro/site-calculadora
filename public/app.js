@@ -1,5 +1,6 @@
 const form = document.getElementById('form-financiamento');
 const resultado = document.getElementById('resultado');
+const botaoLimpar = document.getElementById('btn-limpar');
 let dadosUltimaTabela = null;
 
 function formatarMoeda(valor) {
@@ -78,6 +79,12 @@ function gerarTabelaAmortizacao(valorFinanciado, numeroMeses, taxaJuros) {
   return { parcelaMensal: parcela, valorTotalPago, totalJuros, tabela };
 }
 
+function limparFormulario() {
+  form.reset();
+  dadosUltimaTabela = null;
+  resultado.innerHTML = 'Preencha os dados para ver o resultado.';
+}
+
 function exportarCsv() {
   if (!dadosUltimaTabela) {
     return;
@@ -107,6 +114,8 @@ function exportarCsv() {
   link.click();
   URL.revokeObjectURL(url);
 }
+
+botaoLimpar.addEventListener('click', limparFormulario);
 
 form.addEventListener('submit', (evento) => {
   evento.preventDefault();

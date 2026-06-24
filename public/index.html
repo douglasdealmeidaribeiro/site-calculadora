@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Financiamento Price</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>Calculadora de Financiamento</h1>
+        <p>Informe os dados para calcular a parcela mensal no sistema Price e visualizar a tabela completa de amortização.</p>
+
+        <form id="form-financiamento">
+          <label for="valorFinanciado">Valor financiado (R$)</label>
+          <input id="valorFinanciado" name="valorFinanciado" type="number" min="0" step="0.01" required />
+
+          <label for="numeroMeses">Número de meses</label>
+          <input id="numeroMeses" name="numeroMeses" type="number" min="1" step="1" required />
+
+          <label for="taxaJuros">Taxa de juros mensal (%)</label>
+          <input id="taxaJuros" name="taxaJuros" type="number" min="0" step="0.01" required />
+
+          <button type="submit">Calcular parcela</button>
+        </form>
+
+        <div id="resultado" class="resultado" aria-live="polite">
+          Preencha os dados para ver o resultado.
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

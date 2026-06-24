@@ -1,5 +1,6 @@
 const form = document.getElementById('form-financiamento');
 const resultado = document.getElementById('resultado');
+let dadosUltimaTabela = null;
 
 function formatarMoeda(valor) {
   return Number(valor).toLocaleString('pt-BR', {
@@ -77,6 +78,36 @@ function gerarTabelaAmortizacao(valorFinanciado, numeroMeses, taxaJuros) {
   return { parcelaMensal: parcela, valorTotalPago, totalJuros, tabela };
 }
 
+function exportarCsv() {
+  if (!dadosUltimaTabela) {
+    return;
+  }
+
+  const linhas = [
+    ['Mês', 'Saldo inicial', 'Prestação', 'Juros', 'Amortização', 'Saldo final'],
+    ...dadosUltimaTabela.tabela.map((linha) => [
+      linha.mes,
+      linha.saldoInicial,
+      linha.prestacao,
+      linha.juros,
+      linha.amortizacao,
+      linha.saldoFinal,
+    ]),
+  ];
+
+  const conteudo = linhas
+    .map((linha) => linha.map((valor) => `"${String(valor).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+
+  const blob = new Blob([conteudo], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'tabela-amortizacao.csv';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 form.addEventListener('submit', (evento) => {
   evento.preventDefault();
 
@@ -87,6 +118,7 @@ form.addEventListener('submit', (evento) => {
 
   try {
     const dadosResposta = gerarTabelaAmortizacao(valorFinanciado, numeroMeses, taxaJuros);
+    dadosUltimaTabela = dadosResposta;
 
     const linhasTabela = dadosResposta.tabela
       .map((linha) => `
@@ -108,6 +140,8 @@ form.addEventListener('submit', (evento) => {
         <p><strong>Total de juros:</strong> ${formatarMoeda(dadosResposta.totalJuros)}</p>
       </div>
 
+      <button id="btn-exportar" class="btn-exportar" type="button">Exportar para CSV</button>
+
       <div class="tabela-wrapper">
         <table>
           <thead>
@@ -127,4 +161,11 @@ form.addEventListener('submit', (evento) => {
   } catch (erro) {
     resultado.innerHTML = `<strong>Erro:</strong> ${erro.message}`;
   }
+
+  setTimeout(() => {
+    const botaoExportar = document.getElementById('btn-exportar');
+    if (botaoExportar) {
+      botaoExportar.addEventListener('click', exportarCsv);
+    }
+  }, 0);
 });
